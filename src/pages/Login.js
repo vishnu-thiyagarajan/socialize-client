@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import withStyles from '@material-ui/core/styles/withStyles'
+import { useHistory } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
-import PropTypes from 'prop-types'
 import axios from 'axios'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
@@ -34,6 +33,7 @@ const styles = makeStyles({
 })
 
 const Login = (props) => {
+  const history = useHistory()
   const [form, setForm] = useState({ email: '', password: '', loading: false, errors: {} })
   const classes = styles()
   const handleSubmit = (event) => {
@@ -45,8 +45,10 @@ const Login = (props) => {
     }
     axios.post('/login', UserData)
       .then(res => {
+        localStorage.setItem('SocializeIdToken', `Bearer ${res.data.token}`)
+        axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`
         setForm({ ...form, loading: false })
-        props.history.push('/')
+        history.push('/')
       })
       .catch(err => {
         setForm({ ...form, loading: false, errors: err.response.data })
@@ -57,6 +59,7 @@ const Login = (props) => {
     newForm[event.target.name] = event.target.value
     setForm({ ...form, ...newForm })
   }
+  if (props.auth) history.push('/')
   return (
     <Grid container className={classes.form}>
       <Grid item sm />
@@ -94,4 +97,4 @@ const Login = (props) => {
   )
 }
 
-export default withStyles(styles)(Login)
+export default Login
