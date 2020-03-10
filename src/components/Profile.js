@@ -95,7 +95,7 @@ const Profile = (props) => {
     <Paper className={classes.paper}>
       <div className={classes.profile}>
         <div className='image-wrapper'>
-          <img src={profile.imageUrl || '../images/blank.png' } alt='profile' className='profile-image' />
+          <img src={profile.imageUrl || '../images/blank.png'} alt='profile' className='profile-image' />
           <input
             type='file'
             id='imageInput'

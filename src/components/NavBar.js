@@ -3,7 +3,7 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
 import MyButton from '../util/MyButton'
-// import PostScream from '../scream/PostScream'
+import PostAPost from './PostAPost'
 // import Notifications from './Notifications';
 import HomeIcon from '@material-ui/icons/Home'
 const Link = require('react-router-dom').Link
@@ -14,7 +14,7 @@ const NavBar = (props) => {
       <Toolbar className='nav-container'>
         {props.auth && (
           <>
-            {/* <PostScream /> */}
+            <PostAPost setPosts={props.setPosts} />
             <Link to='/'>
               <MyButton tip='Home'>
                 <HomeIcon />

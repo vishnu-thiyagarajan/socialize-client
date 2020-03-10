@@ -27,11 +27,11 @@ const theme = createMuiTheme({
 const App = () => {
   const [auth, setAuth] = useState(null)
   const [user, setUser] = useState(null)
+  const [posts, setPosts] = useState(null)
   useEffect(() => {
     const token = localStorage.SocializeIdToken
     if (token) {
       const decodedToken = jwtDecode(token)
-      console.table(decodedToken)
       setUser({ email: decodedToken.email, user: decodedToken.user_id })
       if (decodedToken.exp * 1000 < Date.now()) {
         setAuth(false)
@@ -43,14 +43,17 @@ const App = () => {
     }
     return () => setAuth(false)
   }, [auth])
+  const handlePosts = (newPost) => {
+    setPosts([newPost, ...posts])
+  }
   return (
     <MuiThemeProvider theme={theme}>
       <div className='App'>
         <Router>
           <div className='container'>
-            <NavBar auth={auth} />
+            <NavBar auth={auth} setPosts={handlePosts} />
             <Switch>
-              <Route exact path='/'><Home setAuth={setAuth} user={user}/></Route>
+              <Route exact path='/'><Home setAuth={setAuth} user={user} posts={posts} setPosts={setPosts} /></Route>
               <Route exact path='/login'><Login auth={auth} /></Route>
               <Route exact path='/logout'><Logout setAuth={setAuth} auth={auth} /></Route>
               <Route exact path='/signup'><Signup setAuth={setAuth} auth={auth} /></Route>
