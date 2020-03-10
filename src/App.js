@@ -24,23 +24,25 @@ const theme = createMuiTheme({
     }
   }
 })
-const App = (props) => {
+const App = () => {
   const [auth, setAuth] = useState(null)
   const [user, setUser] = useState(null)
   useEffect(() => {
     const token = localStorage.SocializeIdToken
     if (token) {
       const decodedToken = jwtDecode(token)
+      console.table(decodedToken)
       setUser({ email: decodedToken.email, user: decodedToken.user_id })
       if (decodedToken.exp * 1000 < Date.now()) {
         setAuth(false)
-        props.history.push('/login')
+        localStorage.removeItem('SocializeIdToken')
+        alert('Session timed out.Please login again')
       } else {
         setAuth(true)
       }
     }
     return () => setAuth(false)
-  }, [props, auth])
+  }, [auth])
   return (
     <MuiThemeProvider theme={theme}>
       <div className='App'>

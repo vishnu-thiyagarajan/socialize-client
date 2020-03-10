@@ -11,7 +11,7 @@ const Home = (props) => {
     axios.defaults.headers.common['Authorization'] = token
     axios.get('/posts')
       .then(res => setPosts(res.data))
-  }, [])
+  }, [props])
   const recentPostsMarkUp = posts.length ? posts.map((post, id) => <Post key={id} post={post} />) : <p>Loading...</p>
   return (
     <Grid container spacing={10}>

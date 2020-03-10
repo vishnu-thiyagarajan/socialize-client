@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import axios from 'axios'
 import Grid from '@material-ui/core/Grid'
@@ -32,6 +33,7 @@ const styles = makeStyles({
 })
 
 const Signup = (props) => {
+  const history = useHistory()
   const [form, setForm] = useState({ email: '', password: '', confirmPassword: '', handle: '', loading: false, errors: {} })
   const classes = styles()
   const handleSubmit = (event) => {
@@ -48,7 +50,7 @@ const Signup = (props) => {
         localStorage.setItem('SocializeIdToken', `Bearer ${res.data.token}`)
         axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`
         setForm({ ...form, loading: false })
-        props.history.push('/')
+        history.push('/')
       })
       .catch(err => {
         setForm({ ...form, loading: false, errors: err.response.data })
