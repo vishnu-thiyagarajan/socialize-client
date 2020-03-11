@@ -5,8 +5,9 @@ import Post from '../components/Post'
 import Profile from '../components/Profile'
 const Home = (props) => {
   const { setAuth, user, setUser, posts, setPosts } = props
-  const likesComms = (newPost) => {
+  const likesComms = (newPost, del) => {
     const index = posts.findIndex(post => post.postId === newPost.postId)
+    if (del) return setPosts([...posts.slice(0, index), ...posts.slice(index + 1)])
     setPosts([...posts.slice(0, index), newPost, ...posts.slice(index + 1)])
   }
   useEffect(() => {

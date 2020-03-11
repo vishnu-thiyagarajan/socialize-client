@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography'
 import dayjs from 'dayjs'
 import LikeButton from './LikeButton'
 import PostDialog from './PostDialog'
+import DeletePost from './DeletePost'
 import relativeTime from 'dayjs/plugin/relativeTime'
 const Link = require('react-router-dom').Link
 
@@ -33,22 +34,24 @@ const Post = (props) => {
   const { postId, body, userHandle, userImage, createdAt, likeCount, commentCount } = props.post
   return (
     <Card className={classes.card}>
-      <CardMedia image={userImage} title='Profile image' className={classes.image} />
+      <CardMedia component={Link} to={`/users/${userHandle}/post/${postId}`} image={userImage} title='Profile image' className={classes.image} />
       <CardContent className={classes.content}>
         <Typography variant='h5' component={Link} to={`/users/${userHandle}`} color='primary'>{userHandle}</Typography>
         <Typography variant='body2' color='textSecondary'>{dayjs(createdAt).fromNow()}</Typography>
         <Typography variant='body1'>{body}</Typography>
-        <CardActions>
-          <LikeButton postId={postId} user={props.user} setUser={props.setUser} likesComms={props.likesComms} />
-          <span>{likeCount} Likes</span>
-          <MyButton tip='comments'> <ChatIcon color='primary' /></MyButton>
-          <span>{commentCount} comments</span>
-          {/* <PostDialog
-            postId={postId}
-            userHandle={userHandle}
-            // openDialog={this.props.openDialog}
-          /> */}
-        </CardActions>
+        {props.user && userHandle === props.user.credentials.handle ? (<DeletePost postId={postId} likesComms={props.likesComms} />) : null}
+        {props.user &&
+          <CardActions>
+            <LikeButton postId={postId} user={props.user} setUser={props.setUser} likesComms={props.likesComms} />
+            <span>{likeCount} Likes</span>
+            <MyButton tip='comments'> <ChatIcon color='primary' /></MyButton>
+            <span>{commentCount} comments</span>
+            {/* <PostDialog
+              postId={postId}
+              userHandle={userHandle}
+              // openDialog={this.props.openDialog}
+            /> */}
+          </CardActions>}
       </CardContent>
     </Card>
   )

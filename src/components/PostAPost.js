@@ -87,7 +87,6 @@ const PostAPost = (props) => {
               variant='contained'
               color='primary'
               className={classes.submitButton}
-            //   disabled={loading}
             >Submit
             </Button>
           </form>

@@ -8,7 +8,6 @@ import { Link, Redirect } from 'react-router-dom'
 import dayjs from 'dayjs'
 import EditDetails from './EditDetails'
 import MyButton from '../util/MyButton'
-// import ProfileSkeleton from '../../util/ProfileSkeleton'
 import LocationOn from '@material-ui/icons/LocationOn'
 import LinkIcon from '@material-ui/icons/Link'
 import CalendarToday from '@material-ui/icons/CalendarToday'
@@ -83,7 +82,11 @@ const Profile = (props) => {
     formData.append('image', image, image.name)
     axios.post('/uploadImg', formData)
       .then(res => res.data.imageUrl)
-      .then(imageUrl => setProfile({ ...profile, imageUrl: imageUrl }))
+      .then(imageUrl => {
+        setProfile({ ...profile, imageUrl: imageUrl })
+        props.user.credentials.imageUrl = imageUrl
+        props.setUser({ ...props.user })
+      })
   }
   if (!profile) { return (<div />) }
   if (logout) { return (<Redirect to='/logout' />) }

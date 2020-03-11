@@ -6,6 +6,7 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import NavBar from './components/NavBar'
 import Logout from './components/Logout'
+import User from './pages/User'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import jwtDecode from 'jwt-decode'
@@ -33,10 +34,9 @@ const App = () => {
     const token = localStorage.SocializeIdToken
     if (token) {
       const decodedToken = jwtDecode(token)
-      // setUser({ email: decodedToken.email, user: decodedToken.user_id })
-      // if (res.data.likes.find(like => like.postId === props.postId)) setLiked(true)
       if (decodedToken.exp * 1000 < Date.now()) {
         setAuth(false)
+        setUser(null)
         localStorage.removeItem('SocializeIdToken')
         alert('Session timed out.Please login again')
       } else {
@@ -58,6 +58,8 @@ const App = () => {
           <div className='container'>
             <NavBar auth={auth} setPosts={handlePosts} />
             <Switch>
+              <Route exact path='/users/:handle' component={User} />
+              <Route exact path='/users/:handle/post/:postId' component={User} />
               <Route exact path='/'><Home setAuth={setAuth} user={user} setUser={setUser} posts={posts} setPosts={setPosts} /></Route>
               <Route exact path='/login'><Login auth={auth} /></Route>
               <Route exact path='/logout'><Logout setAuth={setAuth} auth={auth} /></Route>
