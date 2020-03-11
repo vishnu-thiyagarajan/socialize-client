@@ -2,14 +2,20 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardMedia from '@material-ui/core/CardMedia'
+import MyButton from '../util/MyButton'
+import ChatIcon from '@material-ui/icons/Chat'
+import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import dayjs from 'dayjs'
+import LikeButton from './LikeButton'
+import PostDialog from './PostDialog'
 import relativeTime from 'dayjs/plugin/relativeTime'
 const Link = require('react-router-dom').Link
 
 const styles = makeStyles({
   card: {
+    position: 'relative',
     display: 'flex',
     marginBottom: 20
   },
@@ -32,6 +38,17 @@ const Post = (props) => {
         <Typography variant='h5' component={Link} to={`/users/${userHandle}`} color='primary'>{userHandle}</Typography>
         <Typography variant='body2' color='textSecondary'>{dayjs(createdAt).fromNow()}</Typography>
         <Typography variant='body1'>{body}</Typography>
+        <CardActions>
+          <LikeButton postId={postId} user={props.user} setUser={props.setUser} likesComms={props.likesComms} />
+          <span>{likeCount} Likes</span>
+          <MyButton tip='comments'> <ChatIcon color='primary' /></MyButton>
+          <span>{commentCount} comments</span>
+          {/* <PostDialog
+            postId={postId}
+            userHandle={userHandle}
+            // openDialog={this.props.openDialog}
+          /> */}
+        </CardActions>
       </CardContent>
     </Card>
   )

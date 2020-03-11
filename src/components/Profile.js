@@ -62,7 +62,6 @@ const styles = makeStyles({
   }
 })
 const Profile = (props) => {
-  // const blankImg = require('../images/blank.png')
   const classes = styles()
   const [profile, setProfile] = useState(null)
   const [logout, setLogout] = useState(null)
@@ -71,10 +70,7 @@ const Profile = (props) => {
   }
   useEffect(() => {
     if (props.user) {
-      const token = localStorage.SocializeIdToken
-      axios.defaults.headers.common.Authorization = token
-      axios.get('/user')
-        .then(res => setProfile(res.data.credentials))
+      setProfile(props.user.credentials)
     }
   }, [props])
   const handleEditPicture = () => {

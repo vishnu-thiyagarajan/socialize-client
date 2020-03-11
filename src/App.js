@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import './App.css'
 import Home from './pages/Home'
 import Login from './pages/Login'
@@ -27,18 +28,22 @@ const theme = createMuiTheme({
 const App = () => {
   const [auth, setAuth] = useState(null)
   const [user, setUser] = useState(null)
-  const [posts, setPosts] = useState(null)
+  const [posts, setPosts] = useState([])
   useEffect(() => {
     const token = localStorage.SocializeIdToken
     if (token) {
       const decodedToken = jwtDecode(token)
-      setUser({ email: decodedToken.email, user: decodedToken.user_id })
+      // setUser({ email: decodedToken.email, user: decodedToken.user_id })
+      // if (res.data.likes.find(like => like.postId === props.postId)) setLiked(true)
       if (decodedToken.exp * 1000 < Date.now()) {
         setAuth(false)
         localStorage.removeItem('SocializeIdToken')
         alert('Session timed out.Please login again')
       } else {
         setAuth(true)
+        axios
+          .get('/user')
+          .then(res => setUser(res.data))
       }
     }
     return () => setAuth(false)
@@ -53,7 +58,7 @@ const App = () => {
           <div className='container'>
             <NavBar auth={auth} setPosts={handlePosts} />
             <Switch>
-              <Route exact path='/'><Home setAuth={setAuth} user={user} posts={posts} setPosts={setPosts} /></Route>
+              <Route exact path='/'><Home setAuth={setAuth} user={user} setUser={setUser} posts={posts} setPosts={setPosts} /></Route>
               <Route exact path='/login'><Login auth={auth} /></Route>
               <Route exact path='/logout'><Logout setAuth={setAuth} auth={auth} /></Route>
               <Route exact path='/signup'><Signup setAuth={setAuth} auth={auth} /></Route>
