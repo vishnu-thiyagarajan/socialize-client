@@ -62,6 +62,7 @@ const styles = makeStyles({
   }
 })
 const User = (props) => {
+  console.log(props)
   const classes = styles()
   const [profile, setProfile] = useState(null)
   const [open, setOpen] = useState(true)
@@ -93,16 +94,17 @@ const User = (props) => {
   return (
     <Grid container spacing={10}>
       <Grid item sm={4} xs={12}>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          fullWidth
-          maxWidth='sm'
-        >
-          <DialogContent>
-            {post && <Post post={post} />}
-          </DialogContent>
-        </Dialog>
+        {post &&
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            fullWidth
+            maxWidth='sm'
+          >
+            <DialogContent>
+              <Post post={post} user={props.user} setUser={props.setUser} likesComms={props.likesComms} />
+            </DialogContent>
+          </Dialog>}
       </Grid>
       <Grid item sm={4} xs={12}>
         {profile === null ? (<div />) : (

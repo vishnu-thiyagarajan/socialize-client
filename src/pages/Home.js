@@ -5,11 +5,6 @@ import Post from '../components/Post'
 import Profile from '../components/Profile'
 const Home = (props) => {
   const { setAuth, user, setUser, posts, setPosts } = props
-  const likesComms = (newPost, del) => {
-    const index = posts.findIndex(post => post.postId === newPost.postId)
-    if (del) return setPosts([...posts.slice(0, index), ...posts.slice(index + 1)])
-    setPosts([...posts.slice(0, index), newPost, ...posts.slice(index + 1)])
-  }
   useEffect(() => {
     const token = localStorage.SocializeIdToken
     if (token) setAuth(true)
@@ -17,7 +12,7 @@ const Home = (props) => {
     axios.get('/posts')
       .then(res => setPosts(res.data))
   }, [setAuth, setPosts])
-  const recentPostsMarkUp = posts.length ? posts.map((post, id) => <Post key={id} post={post} user={user} setUser={setUser} likesComms={likesComms} />) : <p>Loading...</p>
+  const recentPostsMarkUp = posts.length ? posts.map((post, id) => <Post key={id} post={post} user={user} setUser={setUser} likesComms={props.likesComms} />) : <p>Loading...</p>
   return (
     <Grid container spacing={10}>
       <Grid item sm={8} xs={12}>{recentPostsMarkUp}</Grid>

@@ -48,6 +48,11 @@ const App = () => {
     }
     return () => setAuth(false)
   }, [auth])
+  const likesComms = (newPost, del) => {
+    const index = posts.findIndex(post => post.postId === newPost.postId)
+    if (del) return setPosts([...posts.slice(0, index), ...posts.slice(index + 1)])
+    setPosts([...posts.slice(0, index), newPost, ...posts.slice(index + 1)])
+  }
   const handlePosts = (newPost) => {
     setPosts([newPost, ...posts])
   }
@@ -59,10 +64,10 @@ const App = () => {
             <NavBar auth={auth} setPosts={handlePosts} />
             <Switch>
               <Route exact path='/users/:handle' component={User} />
-              <Route exact path='/users/:handle/post/:postId' component={User} />
-              <Route exact path='/'><Home setAuth={setAuth} user={user} setUser={setUser} posts={posts} setPosts={setPosts} /></Route>
+              <Route exact path='/users/:handle/post/:postId' render={(props) => <User user={user} setUser={setUser} likesComms={likesComms} {...props} />} />
+              <Route exact path='/'><Home setAuth={setAuth} user={user} setUser={setUser} posts={posts} setPosts={setPosts} likesComms={likesComms} /></Route>
               <Route exact path='/login'><Login auth={auth} /></Route>
-              <Route exact path='/logout'><Logout setAuth={setAuth} auth={auth} /></Route>
+              <Route exact path='/logout'><Logout setAuth={setAuth} auth={auth} setUser={setUser} /></Route>
               <Route exact path='/signup'><Signup setAuth={setAuth} auth={auth} /></Route>
             </Switch>
           </div>

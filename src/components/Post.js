@@ -40,18 +40,13 @@ const Post = (props) => {
         <Typography variant='body2' color='textSecondary'>{dayjs(createdAt).fromNow()}</Typography>
         <Typography variant='body1'>{body}</Typography>
         {props.user && userHandle === props.user.credentials.handle ? (<DeletePost postId={postId} likesComms={props.likesComms} />) : null}
-        {props.user &&
-          <CardActions>
-            <LikeButton postId={postId} user={props.user} setUser={props.setUser} likesComms={props.likesComms} />
-            <span>{likeCount} Likes</span>
-            <MyButton tip='comments'> <ChatIcon color='primary' /></MyButton>
-            <span>{commentCount} comments</span>
-            {/* <PostDialog
-              postId={postId}
-              userHandle={userHandle}
-              // openDialog={this.props.openDialog}
-            /> */}
-          </CardActions>}
+        <CardActions>
+          <LikeButton postId={postId} user={props.user} setUser={props.setUser} likesComms={props.likesComms} />
+          <span>{likeCount} Likes</span>
+          <MyButton tip='comments'> <ChatIcon color='primary' /></MyButton>
+          <span>{commentCount} comments</span>
+          <PostDialog postId={postId} userHandle={userHandle} user={props.user} setUser={props.setUser} likesComms={props.likesComms} />
+        </CardActions>
       </CardContent>
     </Card>
   )
