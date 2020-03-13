@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import MyButton from '../util/MyButton'
-import Comments from './CommentForm.js'
+import Comments from './Comments'
 import CommentForm from './CommentForm'
 import dayjs from 'dayjs'
 import { Link, useHistory } from 'react-router-dom'
@@ -65,7 +65,7 @@ const PostDialog = (props) => {
     window.history.pushState(null, null, state.oldPath)
     setState({ ...state, open: false })
   }
-  const dialogMarkup = (
+  const dialogMarkup = data ? ( 
     <Grid container spacing={10}>
       <Grid item sm={5}>
         <img src={data.userImage} alt='Profile' className={classes.profileImage} />
@@ -93,7 +93,7 @@ const PostDialog = (props) => {
       <CommentForm postId={data.postId} user={props.user} setUser={props.setUser} likesComms={props.likesComms} />
       <Comments comments={data.comments} />
     </Grid>
-  )
+  ) : null
   return (
     <>
       <MyButton
@@ -103,23 +103,24 @@ const PostDialog = (props) => {
       >
         <UnfoldMore color='primary' />
       </MyButton>
-      <Dialog
-        open={state.open}
-        onClose={handleClose}
-        fullWidth
-        maxWidth='sm'
-      >
-        <MyButton
-          tip='Close'
-          onClick={handleClose}
-          tipClassName={classes.closeButton}
+      {data &&
+        <Dialog
+          open={state.open}
+          onClose={handleClose}
+          fullWidth
+          maxWidth='sm'
         >
-          <CloseIcon />
-        </MyButton>
-        <DialogContent className={classes.dialogContent}>
-          {dialogMarkup}
-        </DialogContent>
-      </Dialog>
+          <MyButton
+            tip='Close'
+            onClick={handleClose}
+            tipClassName={classes.closeButton}
+          >
+            <CloseIcon />
+          </MyButton>
+          <DialogContent className={classes.dialogContent}>
+            {dialogMarkup}
+          </DialogContent>
+        </Dialog>}
     </>
   )
 }

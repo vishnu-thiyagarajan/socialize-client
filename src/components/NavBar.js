@@ -4,7 +4,7 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
 import MyButton from '../util/MyButton'
 import PostAPost from './PostAPost'
-// import Notifications from './Notifications';
+import Notifications from './Notifications'
 import HomeIcon from '@material-ui/icons/Home'
 const Link = require('react-router-dom').Link
 
@@ -20,7 +20,7 @@ const NavBar = (props) => {
                 <HomeIcon />
               </MyButton>
             </Link>
-            {/* <Notifications /> */}
+            <Notifications />
           </>
         )}
         {!props.auth && (
