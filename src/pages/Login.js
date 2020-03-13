@@ -1,13 +1,12 @@
-import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
+import { Link, Redirect } from 'react-router-dom'
 import axios from 'axios'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import AppIcon from '../images/favi.png'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-const Link = require('react-router-dom').Link
 
 const styles = makeStyles({
   form: {
@@ -33,9 +32,16 @@ const styles = makeStyles({
 })
 
 const Login = (props) => {
-  const history = useHistory()
+  const [loggedIn, setLoggedIn] = useState(false)
   const [form, setForm] = useState({ email: '', password: '', loading: false, errors: {} })
   const classes = styles()
+  useEffect(() => {
+    return () => {
+      if (loggedIn) {
+        props.setAuth(true)
+      }
+    }
+  }, [loggedIn, props])
   const handleSubmit = (event) => {
     event.preventDefault()
     setForm({ ...form, loading: true })
@@ -46,9 +52,9 @@ const Login = (props) => {
     axios.post('/login', UserData)
       .then(res => {
         localStorage.setItem('SocializeIdToken', `Bearer ${res.data.token}`)
-        axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`
+        axios.defaults.headers.common.Authorization = `Bearer ${res.data.token}`
         setForm({ ...form, loading: false })
-        history.push('/')
+        setLoggedIn(true)
       })
       .catch(err => {
         setForm({ ...form, loading: false, errors: err.response.data })
@@ -59,7 +65,10 @@ const Login = (props) => {
     newForm[event.target.name] = event.target.value
     setForm({ ...form, ...newForm })
   }
-  if (props.auth) history.push('/')
+  if (props.auth) setLoggedIn(true)
+  if (loggedIn) {
+    return (<Redirect to='/' />)
+  }
   return (
     <Grid container className={classes.form}>
       <Grid item sm />

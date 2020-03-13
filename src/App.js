@@ -41,6 +41,7 @@ const App = () => {
         alert('Session timed out.Please login again')
       } else {
         setAuth(true)
+        setPosts([])
         axios
           .get('/user')
           .then(res => setUser(res.data))
@@ -53,9 +54,7 @@ const App = () => {
     if (del) return setPosts([...posts.slice(0, index), ...posts.slice(index + 1)])
     setPosts([...posts.slice(0, index), newPost, ...posts.slice(index + 1)])
   }
-  const handlePosts = (newPost) => {
-    setPosts([newPost, ...posts])
-  }
+  const handlePosts = (newPost) => setPosts([newPost, ...posts])
   return (
     <MuiThemeProvider theme={theme}>
       <div className='App'>
@@ -65,8 +64,8 @@ const App = () => {
             <Switch>
               <Route exact path='/users/:handle' component={User} />
               <Route exact path='/users/:handle/post/:postId' render={(props) => <User user={user} setUser={setUser} likesComms={likesComms} {...props} />} />
-              <Route exact path='/'><Home setAuth={setAuth} user={user} setUser={setUser} posts={posts} setPosts={setPosts} likesComms={likesComms} /></Route>
-              <Route exact path='/login'><Login auth={auth} /></Route>
+              <Route exact path='/'><Home user={user} setUser={setUser} posts={posts} setPosts={setPosts} likesComms={likesComms} /></Route>
+              <Route exact path='/login'><Login auth={auth} setAuth={setAuth} /></Route>
               <Route exact path='/logout'><Logout setAuth={setAuth} auth={auth} setUser={setUser} /></Route>
               <Route exact path='/signup'><Signup setAuth={setAuth} auth={auth} /></Route>
             </Switch>
