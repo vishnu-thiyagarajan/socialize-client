@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { Redirect } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import axios from 'axios'
 import Grid from '@material-ui/core/Grid'
@@ -33,9 +33,16 @@ const styles = makeStyles({
 })
 
 const Signup = (props) => {
-  const history = useHistory()
+  const [signedUp, setSignedUp] = useState(false)
   const [form, setForm] = useState({ email: '', password: '', confirmPassword: '', handle: '', loading: false, errors: {} })
   const classes = styles()
+  useEffect(() => {
+    return () => {
+      if (signedUp) {
+        props.setAuth(true)
+      }
+    }
+  }, [signedUp, props])
   const handleSubmit = (event) => {
     event.preventDefault()
     setForm({ ...form, loading: true })
@@ -48,9 +55,9 @@ const Signup = (props) => {
     axios.post('/signup', UserData)
       .then(res => {
         localStorage.setItem('SocializeIdToken', `Bearer ${res.data.token}`)
-        axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`
+        axios.defaults.headers.common.Authorization = `Bearer ${res.data.token}`
         setForm({ ...form, loading: false })
-        history.push('/')
+        setSignedUp(true)
       })
       .catch(err => {
         setForm({ ...form, loading: false, errors: err.response.data })
@@ -61,6 +68,7 @@ const Signup = (props) => {
     newForm[event.target.name] = event.target.value
     setForm({ ...form, ...newForm })
   }
+  if (signedUp) return (<Redirect to='/' />)
   return (
     <Grid container className={classes.form}>
       <Grid item sm />

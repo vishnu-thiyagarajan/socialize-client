@@ -22,6 +22,7 @@ const Notifications = (props) => {
     setAnchorEl(null)
   }
   const onMenuOpened = () => {
+    setNotifications([])
     // let unreadNotificationsIds = this.props.notifications
     //   .filter((not) => !not.read)
     //   .map((not) => not.notificationId);

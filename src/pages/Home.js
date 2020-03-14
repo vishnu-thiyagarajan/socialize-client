@@ -15,7 +15,7 @@ const Home = (props) => {
       const limit = 5 // Number(process.env.REACT_APP_POST_LIMIT)
       if (entries[0].isIntersecting && hasMore) {
         try {
-          axios.get(`/posts/${lastID}/${limit}`)
+          axios.get(`/postpage/${lastID}/${limit}`)
             .then(res => {
               if (!res.data.length) return setHasMore(false)
               setPosts([...posts, ...res.data])

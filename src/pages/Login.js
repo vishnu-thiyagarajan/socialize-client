@@ -66,9 +66,7 @@ const Login = (props) => {
     setForm({ ...form, ...newForm })
   }
   if (props.auth) setLoggedIn(true)
-  if (loggedIn) {
-    return (<Redirect to='/' />)
-  }
+  if (loggedIn) return (<Redirect to='/' />)
   return (
     <Grid container className={classes.form}>
       <Grid item sm />

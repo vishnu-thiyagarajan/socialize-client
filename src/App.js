@@ -27,6 +27,7 @@ const theme = createMuiTheme({
   }
 })
 const App = () => {
+  axios.defaults.baseURL = 'https://asia-east2-socialsite-64b08.cloudfunctions.net/api'
   const [auth, setAuth] = useState(null)
   const [user, setUser] = useState(null)
   const [posts, setPosts] = useState([])
@@ -41,6 +42,7 @@ const App = () => {
         alert('Session timed out.Please login again')
       } else {
         setAuth(true)
+        axios.defaults.headers.common.Authorization = token
         setPosts([])
         axios
           .get('/user')

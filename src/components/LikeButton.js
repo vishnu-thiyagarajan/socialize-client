@@ -7,6 +7,7 @@ import FavoriteBorder from '@material-ui/icons/FavoriteBorder'
 
 const LikeButton = (props) => {
   const [liked, setLiked] = useState(null)
+  axios.defaults.headers.common.Authorization = localStorage.SocializeIdToken
   useEffect(() => {
     if (props.user && !liked) setLiked(props.user.likes)
   }, [props, liked])
