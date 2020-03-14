@@ -1,3 +1,4 @@
+You can find the app [here](https://socialsite-64b08.firebaseapp.com).<br />
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
